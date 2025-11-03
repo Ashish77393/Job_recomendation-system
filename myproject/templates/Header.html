@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+      integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB"
+      crossorigin="anonymous"
+    />
+    <title>Job Recommendation System</title>
+  </head>
+
+  <body>
+    <!-- HEADER -->
+    <div class="container">
+      <header
+        class="d-flex flex-wrap justify-content-center py-3 mb-4 border-bottom"
+      >
+        <a
+          href="/"
+          class="d-flex align-items-center mb-3 mb-md-0 me-md-auto link-body-emphasis text-decoration-none"
+        >
+          <svg class="bi me-2" width="40" height="32" aria-hidden="true">
+            <use xlink:href="#bootstrap"></use>
+          </svg>
+          <!-- <img
+            class="rounded-start-circle h-10"
+            src="https://tse4.mm.bing.net/th/id/OIP.JPO8SLl0nOL9OCZWUpd5SgHaHK?pid=Api&P=0&h=180"
+          /> -->
+          <span class="fs-4 fw-bold">Job Recommendation</span>
+        </a>
+        <ul class="nav nav-pills">
+          <li class="nav-item">
+            <a
+              href="{% url 'Home' %}"
+              class="nav-link fw-bold fs-3"
+              aria-current="page"
+              >Home</a
+            >
+          </li>
+          <li class="nav-item">
+            <a href="{% url 'about' %}" class="nav-link fw-bold fs-3"
+              >About-us</a
+            >
+          </li>
+          <li class="nav-item">
+            <a href="{% url 'faqs' %}" class="nav-link fw-bold fs-3">FAQs</a>
+          </li>
+        </ul>
+      </header>
+    </div>
+
+    <!-- FORM -->
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"></script>
+  </body>
+</html>
