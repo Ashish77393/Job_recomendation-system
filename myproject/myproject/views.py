@@ -209,7 +209,7 @@ def job_Resume(request):
         # -------------------------------
         # 🔹 Get Job Recommendations
         # -------------------------------
-        recommended_jobs = recommend_jobs_by_skill(skills, top_n=5)
+        recommended_jobs = recommend_jobs_by_skill(skills, top_n=3)
        
         # Pass data to frontend
         return render(request, 'job_list.html', {'results': recommended_jobs, 'user_skill': skills})
