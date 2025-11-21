@@ -28,4 +28,6 @@ path('faqs/', views.FAQs, name='faqs'),
 path('job_list/',views.job_list,name='job_list') ,
 path('job_resume/',views.job_Resume,name='job_resume'),
 path('job_resume/QA/',views.QA,name='QA'),
+path('ResumeData/',views.ResumeData,name="ResumeData"),
+path('pdfDataExtract/',views.pdfDataExtract,name="pdfDataExtract"),
 ]+ static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

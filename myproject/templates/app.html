@@ -1,10 +1,12 @@
 {% include 'Header.html' %}
+
 <!DOCTYPE html>
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Job recomendation system</title>
+    <title>Job Recommendation System</title>
+
     <style>
       /* Reset */
       * {
@@ -17,10 +19,9 @@
       html {
         height: 90%;
         font-family: "Poppins", sans-serif;
-        /* background: linear-gradient(120deg, #89f7fe, #66a6ff); */
       }
 
-      /* Center everything */
+      /* Center Container */
       .form-wrapper {
         display: flex;
         flex-direction: column;
@@ -29,12 +30,13 @@
         width: 100%;
         height: 100%;
         padding: 10px;
+        gap: 20px;
       }
 
-      /* Form container */
+      /* Main Form Box */
       form {
         width: 100%;
-        max-width: 900px; /* optional for readability */
+        max-width: 900px;
         background: rgba(255, 255, 255, 0.95);
         padding: 20px;
         border-radius: 20px;
@@ -58,8 +60,7 @@
         display: block;
       }
 
-      input[type="text"],
-      input[type="file"] {
+      input[type="text"] {
         width: 100%;
         padding: 14px 16px;
         border-radius: 12px;
@@ -69,18 +70,14 @@
         transition: all 0.3s ease;
       }
 
-      input[type="text"]:focus,
-      input[type="file"]:focus {
+      input[type="text"]:focus {
         border-color: #66a6ff;
         box-shadow: 0 0 8px rgba(102, 166, 255, 0.3);
       }
 
-      input[type="file"] {
-        background-color: #f0f4ff;
-        cursor: pointer;
-      }
-
-      button {
+      /* Buttons */
+      button,
+      .upload-btn {
         padding: 16px;
         border: none;
         border-radius: 15px;
@@ -89,14 +86,48 @@
         font-size: 16px;
         font-weight: 500;
         cursor: pointer;
-        transition: all 0.3s ease;
+        transition: 0.3s ease;
+        text-align: center;
+        text-decoration: none;
+        display: block;
+        width: 100%;
       }
 
-      button:hover {
-        transform: translateY(-2px);
-        box-shadow: 0 8px 20px rgba(102, 166, 255, 0.4);
+      button:hover,
+      .upload-btn:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 10px 25px rgba(102, 166, 255, 0.4);
       }
 
+      .note {
+        font-size: 14px;
+        color: #555;
+        text-align: center;
+      }
+
+      /* NEW SECTION: Input + Upload in one row */
+      .row-section {
+        display: flex;
+        gap: 20px;
+        width: 100%;
+      }
+
+      .input-box {
+        flex: 2;
+      }
+
+      .upload-box {
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+        justify-content: flex-end;
+      }
+
+      .small-upload {
+        padding: 14px;
+      }
+
+      /* Animation */
       @keyframes fadeIn {
         from {
           opacity: 0;
@@ -107,18 +138,9 @@
           transform: translateY(0);
         }
       }
-
-      /* Make inputs and button larger on large screens */
-      @media (min-width: 768px) {
-        input[type="text"],
-        input[type="file"],
-        button {
-          font-size: 18px;
-          padding: 16px 18px;
-        }
-      }
     </style>
   </head>
+
   <body>
     <div class="form-wrapper">
       <form
@@ -127,25 +149,36 @@
         action="{% url 'job_resume' %}"
       >
         {% csrf_token %}
+
         <h2>Enter Your Resume Skills</h2>
-        <div>
-          <label for="name">Enter Skills:</label>
-          <input
-            type="text"
-            id="name"
-            name="name"
-            required=""
-            placeholder="Enter all Skills in your Resume..."
-          />
+
+        <!-- Row Section: Input + Upload -->
+        <div class="row-section">
+          <div class="input-box">
+            <label for="name">Enter Skills:</label>
+            <input
+              type="text"
+              id="name"
+              name="name"
+              required
+              placeholder="Enter all skills in your resume..."
+            />
+          </div>
+
+          <div class="upload-box">
+            <label style="visibility: hidden">Upload</label>
+            <a href="{% url 'ResumeData' %}" class="upload-btn small-upload">
+              Upload Resume
+            </a>
+          </div>
         </div>
-        <div>
-          <label for="pdf">Upload Resume:</label>
-          <input type="file" id="pdf" name="pdf" accept="application/pdf" />
-        </div>
+
+        <!-- Submit Button -->
         <button type="submit">Submit</button>
+
         <p class="note">
-          Please ensure your resume is in <strong>PDF format</strong> and
-          includes your latest skills for accurate job recommendations.
+          Please ensure your resume includes your latest skills for accurate job
+          recommendations.
         </p>
       </form>
     </div>
