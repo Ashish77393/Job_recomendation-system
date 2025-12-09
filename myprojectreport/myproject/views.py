@@ -19,7 +19,7 @@ def FAQs(request):
         {"question": "Is this system free?", "answer": "Yes, it is free to use."},
     ]
     return render(request, 'faqs.html', {"faqs": faq_list})
-def job_Resume(request):
+def job_resume(request):
     if request.method == "POST":
         # 📝 Get form data
         skills = request.POST.get('name')        # text input
@@ -206,20 +206,21 @@ def job_Resume(request):
                     "img": img_url
                 })
             return results
+        
 
         # -------------------------------
         # 🔹 Get Job Recommendations
         # -------------------------------
         recommended_jobs = recommend_jobs_by_skill(skills, top_n=3)
-       
+        print(recommended_jobs)
         # Pass data to frontend
-        return render(request, 'myprojectreport/job_listdata.html', {'results': recommended_jobs, 'user_skill': skills})
+        return render(request, 'job_listdata.html', {'results': recommended_jobs, 'user_skill': skills})
 
     # If not POST request, just show the upload page
     return render(request, 'App.html')
 
 def job_list(request):
-    return render(request,'myprojectreport/job_listdata.html')
+    return render(request,'job_listdata.html')
 def QA(request):
     question=Ques.objects.all()
     return render(request,'QA.html',{'question':question})
@@ -255,8 +256,6 @@ def pdfDataExtract(request):
         # Combined skills text (manual + resume)
         final_skill_text = (skills_input + " " + resume_text).lower()
 
-        print("\n📄 Extracted Resume Text (Preview):")
-        print(final_skill_text[:500])
 
 
         # ------------------------------------------------
@@ -445,7 +444,7 @@ def pdfDataExtract(request):
         # ------------------------------------------------
         recommended_jobs = recommend_jobs_by_skill(final_skill_text, top_n=3)
 
-        return render(request, 'myprojectreport/job_listdata.html', {
+        return render(request, 'job_listdata.html', {
             'results': recommended_jobs,
             'user_skill': final_skill_text
         })
