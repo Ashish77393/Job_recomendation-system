@@ -219,7 +219,7 @@ def job_resume(request):
     # If not POST request, just show the upload page
     return render(request, 'App.html')
 
-def job_list(request):
+def job_listdata(request):
     return render(request,'job_listdata.html')
 def QA(request):
     question=Ques.objects.all()
