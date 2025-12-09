@@ -28,7 +28,7 @@ def job_Resume(request):
         # 💾 Save to database
         b = Resume_form(input_skill=skills, input_resume=resume_file)
         b.save()
-        print("✅ Data saved successfully:", skills, resume_file)
+       
 
         # -------------------------------
         # 🔹 Load Pickle Files (Model + TFIDF + Encoder)
@@ -213,13 +213,13 @@ def job_Resume(request):
         recommended_jobs = recommend_jobs_by_skill(skills, top_n=3)
        
         # Pass data to frontend
-        return render(request, 'job_listdata.html', {'results': recommended_jobs, 'user_skill': skills})
+        return render(request, 'myprojectreport/job_listdata.html', {'results': recommended_jobs, 'user_skill': skills})
 
     # If not POST request, just show the upload page
     return render(request, 'App.html')
 
 def job_list(request):
-    return render(request,'job_listdata.html')
+    return render(request,'myprojectreport/job_listdata.html')
 def QA(request):
     question=Ques.objects.all()
     return render(request,'QA.html',{'question':question})
@@ -445,7 +445,7 @@ def pdfDataExtract(request):
         # ------------------------------------------------
         recommended_jobs = recommend_jobs_by_skill(final_skill_text, top_n=3)
 
-        return render(request, 'job_listdata.html', {
+        return render(request, 'myprojectreport/job_listdata.html', {
             'results': recommended_jobs,
             'user_skill': final_skill_text
         })
