@@ -30,4 +30,5 @@ path('job_resume/',views.job_resume,name='job_resume'),
 path('job_resume/QA/',views.QA,name='QA'),
 path('ResumeData/',views.ResumeData,name="ResumeData"),
 path('pdfDataExtract/',views.pdfDataExtract,name="pdfDataExtract"),
+path('qa/', views.qa_view, name='QA'),
 ]+ static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

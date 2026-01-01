@@ -15,3 +15,40 @@ class Ques(models.Model):
     question4=models.TextField(max_length=1000)
     question5=models.TextField(max_length=1000)
 # Create your models here.
+from django.db import models
+
+class JobRole(models.Model):
+    # List of job roles as choices
+    JOB_CHOICES = [
+        ('UI/UX Designer', 'UI/UX Designer'),
+        ('DevOps Engineer', 'DevOps Engineer'),
+        ('Web Developer', 'Web Developer'),
+        ('Machine Learning Engineer', 'Machine Learning Engineer'),
+        ('Cybersecurity Analyst', 'Cybersecurity Analyst'),
+        ('Project Manager', 'Project Manager'),
+        ('Cloud Engineer', 'Cloud Engineer'),
+        ('Blockchain Developer', 'Blockchain Developer'),
+        ('Software Engineer', 'Software Engineer'),
+        ('Data Analyst', 'Data Analyst'),
+        ('Database Administrator', 'Database Administrator'),
+        ('Data Scientist', 'Data Scientist'),
+        ('AI Engineer', 'AI Engineer'),
+        ('Big Data Engineer', 'Big Data Engineer'),
+        ('Business Analyst', 'Business Analyst'),
+        ('Mobile App Developer', 'Mobile App Developer'),
+    ]
+
+    name = models.CharField(max_length=50, choices=JOB_CHOICES, unique=True)
+
+    def __str__(self):
+        return self.name
+
+
+class JobQuestion(models.Model):
+    job_role = models.ForeignKey(JobRole, on_delete=models.CASCADE, related_name='questions')
+    question = models.TextField()
+    answer = models.TextField()
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return f"{self.job_role.name} - {self.question[:50]}..."

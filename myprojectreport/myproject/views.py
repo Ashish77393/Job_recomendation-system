@@ -1,5 +1,5 @@
 from django.shortcuts import render
-from About.models import About,Resume_form,Ques
+from About.models import About,Resume_form,Ques,JobRole,JobQuestion
 import numpy as np
 import pickle
 from pypdf import PdfReader
@@ -181,38 +181,48 @@ def job_resume(request):
         def recommend_jobs_by_skill(new_skills, top_n=5):
             new_skills_clean = new_skills.lower().replace(',', ' ')
 
-            # TF-IDF transformation
+    # TF-IDF transformation
             X_new_tfidf = tfidf.transform([new_skills_clean])
 
-            # Binary skill features
+    # Binary skill features
             X_new_skills = np.array([[1 if skill in new_skills_clean else 0 for skill in skill_columns]])
 
-            # Combine both
+    # Combine both
             X_new = np.hstack([X_new_tfidf.toarray(), X_new_skills])
 
-            # Predict probabilities
+    # Predict probabilities
             probs = model.predict_proba(X_new)[0]
             top_indices = probs.argsort()[-top_n:][::-1]
 
-            # Create results
             results = []
             for idx in top_indices:
-                job_name = dict_jobs.get(idx, {}).get('domain', 'Unknown Job')
-                confidence = probs[idx] * 100
-                img_url = dict_jobs.get(idx, {}).get('img', '')
-                results.append({
-                    "job": job_name,
-                    "confidence": f"{confidence:.2f}%",
-                    "img": img_url
-                })
+             confidence = probs[idx] * 100
+
+        # ✅ Confidence threshold
+             if confidence >0:
+               results.append({
+                "job": dict_jobs[idx]['domain'],
+                "confidence": f"{confidence:.2f}%",
+                "img": dict_jobs[idx]['img']
+            })
+             else:
+                
+              results.append({
+        "job": "No strong match found",
+        "confidence": "Below 20%",
+        "img": "https://tse1.mm.bing.net/th/id/OIP.29UC_yVQ5DBfsUKqHdecCQHaD2?pid=Api&P=0&h=180"
+    })
+
+
             return results
+
         
 
         # -------------------------------
         # 🔹 Get Job Recommendations
         # -------------------------------
         recommended_jobs = recommend_jobs_by_skill(skills, top_n=3)
-        print(recommended_jobs)
+        
         # Pass data to frontend
         return render(request, 'job_listdata.html', {'results': recommended_jobs, 'user_skill': skills})
 
@@ -432,7 +442,7 @@ def pdfDataExtract(request):
             for idx in top_indices:
                 results.append({
                     "job": dict_jobs[idx]['domain'],
-                    "confidence": f"{probs[idx] * 100:.2f}%",
+                     "confidence": f"{probs[idx] * 100:>10.2f}%",
                     "img": dict_jobs[idx]['img']
                 })
 
@@ -453,3 +463,8 @@ def pdfDataExtract(request):
     # GET Request → show upload form
     # ------------------------------------------------
     return render(request, 'App.html')
+def qa_view(request):
+    job = request.GET.get('job')
+    role = JobRole.objects.get(name=job)
+    questions = role.questions.all()  # Query all questions for Data Scien
+    return render(request, 'questions.html', {'questions': questions})

@@ -1,0 +1,106 @@
+{% include 'header.html' %}
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>{{ job }} Interview Questions</title>
+
+    <style>
+      /* 🔒 Scope styles to interview-page ONLY */
+      .interview-page h2 {
+        text-align: center;
+        color: #2c3e50;
+        margin-bottom: 30px;
+        font-size: 28px;
+      }
+
+      .interview-page .job-badge {
+        display: inline-block;
+        background: #0d6efd;
+        color: #fff;
+        padding: 6px 14px;
+        border-radius: 20px;
+        font-size: 14px;
+        margin-top: 10px;
+      }
+
+      .interview-page ul {
+        list-style: none;
+        padding: 0;
+      }
+
+      .interview-page li {
+        background: #f8f9fa;
+        border-left: 5px solid #0d6efd;
+        padding: 20px;
+        margin-bottom: 20px;
+        border-radius: 6px;
+        transition: transform 0.2s ease, box-shadow 0.2s ease;
+      }
+
+      .interview-page li:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 6px 18px rgba(0, 0, 0, 0.1);
+      }
+
+      .interview-page .question {
+        font-weight: 600;
+        color: #212529;
+        margin-bottom: 10px;
+      }
+
+      .interview-page .answer {
+        color: #495057;
+        line-height: 1.6;
+      }
+
+      .interview-page .qa-label {
+        color: #0d6efd;
+        font-weight: bold;
+        margin-right: 5px;
+      }
+
+      .interview-page .no-data {
+        text-align: center;
+        color: #6c757d;
+        font-size: 16px;
+      }
+
+      @media (max-width: 768px) {
+        .interview-page h2 {
+          font-size: 24px;
+        }
+      }
+    </style>
+  </head>
+
+  <body>
+    <!-- ✅ Scoped wrapper -->
+    <div class="interview-page">
+      <div class="container">
+        <h2>
+          Interview Questions
+          <div class="job-badge">{{ job }}</div>
+        </h2>
+
+        {% if questions %}
+        <ul>
+          {% for qa in questions %}
+          <li>
+            <div class="question">
+              <span class="qa-label">Q.</span>{{ qa.question }}
+            </div>
+            <div class="answer">
+              <span class="qa-label">A.</span>{{ qa.answer }}
+            </div>
+          </li>
+          {% endfor %}
+        </ul>
+        {% else %}
+        <p class="no-data">No interview questions available for this role.</p>
+        {% endif %}
+      </div>
+    </div>
+  </body>
+</html>

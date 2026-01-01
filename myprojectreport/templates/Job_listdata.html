@@ -51,6 +51,12 @@
             <div class="card-body text-center">
               <h5 class="card-title fw-bold">{{data.job}}</h5>
               <p class="card-text">Score :{{data.confidence}}</p>
+              <button
+                class="btn btn-primary"
+                onclick="viewQuestions('{{ data.job }}')"
+              >
+                View Questions
+              </button>
               <a href="{% url 'QA' %}" class="btn btn-primary">View Jobs</a>
             </div>
           </div>
@@ -65,5 +71,12 @@
       integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI"
       crossorigin="anonymous"
     ></script>
+
+    <script>
+      function viewQuestions(job) {
+        const baseUrl = "{% url 'QA' %}";
+        window.location.href = `${baseUrl}?job=${encodeURIComponent(job)}`;
+      }
+    </script>
   </body>
 </html>
