@@ -57,7 +57,9 @@
               >
                 View Questions
               </button>
-              <a href="{% url 'QA' %}" class="btn btn-primary">View Jobs</a>
+              <a href="{% url 'ViewJob' %}" class="btn btn-primary"
+                >View Jobs</a
+              >
             </div>
           </div>
         </div>
@@ -79,4 +81,5 @@
       }
     </script>
   </body>
+  {% include 'Footer.html' %}
 </html>
