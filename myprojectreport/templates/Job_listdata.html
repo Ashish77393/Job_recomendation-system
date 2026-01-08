@@ -57,9 +57,7 @@
               >
                 View Questions
               </button>
-              <a href="{% url 'ViewJob' %}" class="btn btn-primary"
-                >View Jobs</a
-              >
+              <button onclick="ViewJobs('{{ data.job }}')">View Jobs</button>
             </div>
           </div>
         </div>
@@ -78,6 +76,14 @@
       function viewQuestions(job) {
         const baseUrl = "{% url 'QA' %}";
         window.location.href = `${baseUrl}?job=${encodeURIComponent(job)}`;
+      }
+    </script>
+    <script>
+      function ViewJobs(job) {
+        console.log(job);
+
+        const url = "{% url 'ViewJob' %}";
+        window.location.href = `${url}?job=${encodeURIComponent(job)}`;
       }
     </script>
   </body>

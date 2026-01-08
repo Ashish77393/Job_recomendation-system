@@ -2,6 +2,8 @@ from django.shortcuts import render
 from About.models import About,Resume_form,Ques,JobRole,JobQuestion
 import numpy as np
 import pickle
+import requests
+import json
 from pypdf import PdfReader
 
 from IPython.display import Image, display
@@ -232,8 +234,42 @@ def job_resume(request):
 def job_listdata(request):
     return render(request,'job_listdata.html')
 def QA(request):
-    question=Ques.objects.all()
-    return render(request,'QA.html',{'question':question})
+    predicted_job = request.GET.get('job')   # from model or query param
+
+    if not predicted_job:
+        return render(request, 'QA.html', {'error': 'No job predicted'})
+
+    # ---- JSearch API ----
+    url = "https://jsearch.p.rapidapi.com/search"
+    headers = {
+        "X-RapidAPI-Key": "92e1473dc6msh3dc43a1ad132bb0p147cafjsn1852bc4299c7",
+        "X-RapidAPI-Host": "jsearch.p.rapidapi.com"
+    }
+    params = {
+        "query": predicted_job,
+        "page": 1,
+        "num_pages": 1,
+        "country": "us"
+    }
+
+    response = requests.get(url, headers=headers, params=params)
+    jobs_data = response.json().get("data", [])
+
+    jobs = []
+    for job in jobs_data:
+        jobs.append({
+            "title": job.get("job_title"),
+            "location": job.get("job_location"),
+            "posted": job.get("job_posted_at", "N/A"),
+            "company": job.get("employer_name"),
+            "apply": job.get("job_apply_link")
+        })
+
+    return render(request, 'QA.html', {
+        "predicted_job": predicted_job,
+        "jobs": jobs
+    })
+
 def ResumeData(request):
     return render(request,'Resume.html')
 def pdfDataExtract(request):
