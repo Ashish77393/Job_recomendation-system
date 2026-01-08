@@ -15,62 +15,143 @@
       body {
         background-color: #f4f6f9;
       }
+
       .job-card {
-        border-radius: 12px;
-        transition: all 0.3s ease;
+        border-radius: 16px;
+        transition: 0.3s;
+        border: none;
+        height: 100%;
       }
+
       .job-card:hover {
         transform: translateY(-5px);
         box-shadow: 0 10px 25px rgba(0, 0, 0, 0.12);
       }
-      .job-title {
-        font-size: 1.2rem;
-        font-weight: 600;
-      }
-      .company {
-        color: #6c757d;
-      }
+
       .badge-role {
         background-color: #0d6efd;
+        border-radius: 20px;
+        padding: 6px 12px;
+        font-size: 0.75rem;
+      }
+
+      .card-body {
+        display: flex;
+        flex-direction: column;
+      }
+
+      .company-logo {
+        width: 100px;
+        height: 100px;
+        border-radius: 10px;
+        object-fit: cover;
+      }
+
+      .section-title {
+        font-size: 0.9rem;
+        font-weight: 600;
+      }
+
+      .apply-btn {
+        margin-top: auto;
+        border-radius: 12px;
+        font-weight: 600;
+        padding: 12px;
       }
     </style>
   </head>
 
   <body>
     <div class="container my-4">
-      <!-- Page Header -->
-      <div class="text-center mb-4">
-        <h3 class="text-muted">AI-powered job recommendations</h3>
-      </div>
-
-      <!-- Predicted Job Role -->
+      <!-- Header -->
+      <!-- Predicted Job -->
       <div class="alert alert-primary text-center">
         <strong>Predicted Job Role:</strong> {{ predicted_job }}
       </div>
 
-      <!-- Jobs Section -->
+      <!-- Jobs -->
       {% if jobs %}
       <div class="row">
         {% for job in jobs %}
         <div class="col-lg-6 col-md-12 mb-4">
           <div class="card job-card p-3 h-100">
             <div class="card-body">
-              <span class="badge badge-role mb-2">{{ predicted_job }}</span>
+              <!-- Top Row -->
+              <div class="d-flex align-items-center mb-2">
+                <img
+                  src="https://sp.yimg.com/ib/th/id/OIP.6kzT_UnIZbx1M0fBXDDlfQHaE8?pid=Api&w=148&h=148&c=7&dpr=2&rs=1"
+                  alt="Company Logo"
+                  class="company-logo me-3"
+                />
+                <span class="badge badge-role">{{ predicted_job }}</span>
+              </div>
 
-              <h5 class="job-title mt-2">{{ job.title }}</h5>
+              <h5 class="mt-2">{{ job.title }}</h5>
 
-              <p class="company mb-1">
-                <i class="bi bi-building"></i> {{ job.company }}
-              </p>
-
+              <p class="text-muted mb-1">🏢 {{ job.company }}</p>
               <p class="mb-1">📍 <b>Location:</b> {{ job.location }}</p>
+              <p class="text-muted">🕒 <b>Posted:</b> {{ job.posted }}</p>
 
-              <p class="mb-3 text-muted">🕒 <b>Posted:</b> {{ job.posted }}</p>
+              <!-- Qualifications & Responsibilities -->
+              <div class="row mt-3">
+                <!-- Qualifications -->
+                {% if job.qualifications %}
+                <div class="col-md-6">
+                  <h6 class="section-title text-primary">🎓 Qualifications</h6>
+                  <ul class="list-unstyled small">
+                    {% for q in job.qualifications %}
+                    <li
+                      class="{% if forloop.counter > 0 %}d-none extra-qual-{{ forloop.parentloop.counter }}{% endif %}"
+                    >
+                      • {{ q }}
+                    </li>
+                    {% endfor %}
+                  </ul>
 
+                  {% if job.qualifications|length > 0 %}
+                  <span
+                    class="text-primary fw-semibold"
+                    style="cursor: pointer"
+                    onclick="toggleList('extra-qual-{{ forloop.counter }}', this)"
+                  >
+                    Show more
+                  </span>
+                  {% endif %}
+                </div>
+                {% endif %}
+
+                <!-- Responsibilities -->
+                {% if job.responsibilities %}
+                <div class="col-md-6">
+                  <h6 class="section-title text-success">🛠 Responsibilities</h6>
+                  <ul class="list-unstyled small">
+                    {% for r in job.responsibilities %}
+                    <li
+                      class="{% if forloop.counter > 0 %}d-none extra-resp-{{ forloop.parentloop.counter }}{% endif %}"
+                    >
+                      • {{ r }}
+                    </li>
+                    {% endfor %}
+                  </ul>
+
+                  {% if job.responsibilities|length > 0 %}
+                  <span
+                    class="text-success fw-semibold"
+                    style="cursor: pointer"
+                    onclick="toggleList('extra-resp-{{ forloop.counter }}', this)"
+                  >
+                    Show more
+                  </span>
+                  {% endif %}
+                </div>
+                {% endif %}
+              </div>
+
+              <!-- Apply Button -->
               <a
                 href="{{ job.apply }}"
                 target="_blank"
-                class="btn btn-primary w-100"
+                class="btn btn-primary w-100 apply-btn mb-3 mt-3"
               >
                 Apply Now
               </a>
@@ -79,12 +160,25 @@
         </div>
         {% endfor %}
       </div>
+
       {% else %}
       <div class="alert alert-warning text-center">
         No jobs found for this role.
       </div>
       {% endif %}
     </div>
+
+    <!-- Toggle Script -->
+    <script>
+      function toggleList(className, el) {
+        const items = document.querySelectorAll("." + className);
+        const isHidden = items[0].classList.contains("d-none");
+
+        items.forEach((item) => item.classList.toggle("d-none"));
+        el.innerText = isHidden ? "Show less" : "Show more";
+      }
+    </script>
   </body>
+
   {% include 'Footer.html' %}
 </html>

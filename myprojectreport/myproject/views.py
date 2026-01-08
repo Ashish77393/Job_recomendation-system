@@ -262,7 +262,10 @@ def QA(request):
             "location": job.get("job_location"),
             "posted": job.get("job_posted_at", "N/A"),
             "company": job.get("employer_name"),
-            "apply": job.get("job_apply_link")
+            "apply": job.get("job_apply_link"),
+            "qualifications": job.get("job_highlights", {}).get("Qualifications", []),
+    "responsibilities": job.get("job_highlights", {}).get("Responsibilities", []),
+            
         })
 
     return render(request, 'QA.html', {

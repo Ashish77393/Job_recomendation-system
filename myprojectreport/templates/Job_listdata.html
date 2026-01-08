@@ -52,15 +52,12 @@
               <h5 class="card-title fw-bold">{{data.job}}</h5>
               <p class="card-text">Score :{{data.confidence}}</p>
               <button
-                class="btn btn-primary"
+                class="btn btn-success"
                 onclick="viewQuestions('{{ data.job }}')"
               >
                 View Questions
               </button>
-              <button
-                class="btn btn-primary"
-                onclick="ViewJobs('{{ data.job }}')"
-              >
+              <button class="btn btn-info" onclick="ViewJobs('{{ data.job }}')">
                 View Jobs
               </button>
             </div>
@@ -85,8 +82,6 @@
     </script>
     <script>
       function ViewJobs(job) {
-        console.log(job);
-
         const url = "{% url 'ViewJob' %}";
         window.location.href = `${url}?job=${encodeURIComponent(job)}`;
       }
